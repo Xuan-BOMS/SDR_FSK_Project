@@ -1,0 +1,53 @@
+{
+  "game_settings": {
+    "my_team": "red",
+    "target_jammer_level": 1,
+    "__comment_team": "red(我是红方，接收蓝方信号) / blue(我是蓝方，接收红方信号)",
+    "__comment_jammer": "干扰源等级: 0(无/仅广播), 1(一级), 2(二级), 3(三级)",
+    "receive_team": "blue",
+    "__comment_receive": "receive_team: red/blue - select broadcast source to receive"
+  },
+  "frequencies": {
+    "red_team_receiving_blue": {
+      "broadcast_freq": 433920000,
+      "jammer_1_freq": 434920000,
+      "jammer_2_freq": 434520000,
+      "jammer_3_freq": 433920000
+    },
+    "blue_team_receiving_red": {
+      "broadcast_freq": 433200000,
+      "jammer_1_freq": 432200000,
+      "jammer_2_freq": 432600000,
+      "jammer_3_freq": 433200000
+    }
+  },
+  "device": {
+    "driver": "sdrplay",
+    "args": "",
+    "antenna": "RX"
+  },
+  "sdr_settings": {
+    "sample_rate_sps": 2000000,
+    "gain_db": 40,
+    "__comment_sample_rate": "2MHz带宽足够覆盖广播源和干扰源的最大频差(1MHz)"
+  },
+  "demodulation": {
+    "fsk_deviation_hz": 62500,
+    "symbol_rate_bps": 250000,
+    "filter_bandwidth_hz": 600000,
+    "samples_per_symbol": 8,
+    "rrc_alpha": 0.25,
+    "rrc_num_taps": 88
+  },
+  "logging": {
+    "level": "INFO",
+    "save_raw_data": false,
+    "save_spectrum": false,
+    "show_spectrum": true,
+    "spectrum_update_hz": 5
+  },
+  "processing": {
+    "buffer_size": 16384,
+    "enable_jammer": false
+  }
+}
