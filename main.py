@@ -118,6 +118,21 @@ class SpectrumPlot:
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
 
+def estimate_snr_db(samples, sample_rate):
+    n = 4096
+    if len(samples) < n:
+        return None
+    x = samples[:n]
+    window = np.hanning(n)
+    spec = np.fft.fftshift(np.fft.fft(x * window))
+    power = np.abs(spec) ** 2
+    # Estimate noise floor via median power, signal via max power
+    noise_power = np.median(power)
+    signal_power = np.max(power)
+    if noise_power <= 0:
+        return None
+    snr_db = 10 * np.log10(signal_power / noise_power + 1e-12)
+    return snr_db
 
 def main():
     global running
@@ -180,7 +195,11 @@ def main():
 
             now = time.time()
             if now - last_stat >= 1.0:
-                logger.info(f"Packets/s: {pkt_count}")
+                snr_db = estimate_snr_db(samples, raw_config["sdr_settings"]["sample_rate_sps"])
+                if snr_db is None:
+                    logger.info(f"Packets/s: {pkt_count}")
+                else:
+                    logger.info(f"Packets/s: {pkt_count} | SNR~{snr_db:.1f} dB")
                 pkt_count = 0
                 last_stat = now
 
