@@ -32,8 +32,6 @@ class DSPProcessor:
         alpha = self.rrc_alpha
         sps = self.samples_per_symbol
         num_taps = int(self.rrc_num_taps)
-        if num_taps % 2 == 0:
-            num_taps += 1
 
         t = np.arange(-(num_taps // 2), num_taps // 2 + 1, dtype=np.float64) / sps
         taps = np.zeros_like(t)

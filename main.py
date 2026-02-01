@@ -56,9 +56,12 @@ def calculate_frequency_plan(config):
             mode_str = "Blue team listening to RED"
 
     level = game.get("target_jammer_level", 1)
+    enable_jammer = config.get("processing", {}).get("enable_jammer", False)
 
     freq_broadcast = freqs["broadcast_freq"]
-    if level == 0:
+    if not enable_jammer:
+        freq_jammer = freq_broadcast
+    elif level == 0:
         freq_jammer = freq_broadcast
     elif level == 1:
         freq_jammer = freqs["jammer_1_freq"]
