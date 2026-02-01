@@ -33,7 +33,11 @@ class DSPProcessor:
         sps = self.samples_per_symbol
         num_taps = int(self.rrc_num_taps)
 
-        t = np.arange(-(num_taps // 2), num_taps // 2 + 1, dtype=np.float64) / sps
+        # Use exact num_taps length, symmetric around 0.
+        if num_taps % 2 == 0:
+            t = (np.arange(-num_taps / 2 + 0.5, num_taps / 2 + 0.5, dtype=np.float64) / sps)
+        else:
+            t = (np.arange(-(num_taps // 2), num_taps // 2 + 1, dtype=np.float64) / sps)
         taps = np.zeros_like(t)
         for i, ti in enumerate(t):
             if ti == 0.0:
