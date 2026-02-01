@@ -31,6 +31,7 @@ class SDRDriver:
         self.center_freq = self.cfg["center_frequency_hz"]
         self.sample_rate = self.cfg["sdr_settings"]["sample_rate_sps"]
         self.gain = self.cfg["sdr_settings"]["gain_db"]
+        self.agc_enabled = self.cfg.get("sdr_settings", {}).get("agc_enabled", False)
         
         # 这里的带宽设置跟采样率一致，确保不滤除干扰信号
         self.bandwidth = self.sample_rate 
@@ -58,7 +59,16 @@ class SDRDriver:
             # 2. 设置参数
             self.sdr.setSampleRate(SOAPY_SDR_RX, channel, self.sample_rate)
             self.sdr.setFrequency(SOAPY_SDR_RX, channel, self.center_freq)
-            self.sdr.setGain(SOAPY_SDR_RX, channel, self.gain)
+            # AGC / manual gain
+            try:
+                self.sdr.setGainMode(SOAPY_SDR_RX, channel, bool(self.agc_enabled))
+            except Exception:
+                self.logger.warning("设备不支持 AGC 开关设置，继续使用默认增益模式")
+            try:
+                if not self.agc_enabled:
+                    self.sdr.setGain(SOAPY_SDR_RX, channel, self.gain)
+            except Exception:
+                self.logger.warning("设置固定增益失败，可能仍为 AGC 模式")
             
             # 尝试设置带宽
             try:

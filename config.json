@@ -29,7 +29,8 @@
   "sdr_settings": {
     "sample_rate_sps": 2000000,
     "gain_db": 40,
-    "__comment_sample_rate": "2MHz带宽足够覆盖广播源和干扰源的最大频差(1MHz)"
+    "__comment_sample_rate": "2MHz带宽足够覆盖广播源和干扰源的最大频差(1MHz)",
+    "agc_enabled": false
   },
   "demodulation": {
     "fsk_deviation_hz": 62500,

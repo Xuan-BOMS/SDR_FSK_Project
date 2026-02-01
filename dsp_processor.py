@@ -88,11 +88,8 @@ class DSPProcessor:
             return np.array([])
 
         # 6) 4-FSK decision (00->-3, 01->-1, 10->1, 11->3)
-        abs_vals = np.abs(sym_samples)
-        scale = np.percentile(abs_vals, 90) / 3.0 if len(abs_vals) > 10 else self.fsk_dev
-        if scale <= 0:
-            scale = self.fsk_dev
-        levels = np.array([-3, -1, 1, 3]) * scale
+        # Use fixed decision levels in Hz based on spec (4-RRC-FSK mapping).
+        levels = np.array([-3, -1, 1, 3]) * self.fsk_dev
 
         idx = np.argmin(np.abs(sym_samples.reshape(-1, 1) - levels.reshape(1, -1)), axis=1)
         bit_map = np.array([[0, 0], [0, 1], [1, 0], [1, 1]], dtype=np.uint8)
