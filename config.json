@@ -1,10 +1,10 @@
 {
   "game_settings": {
-    "my_team": "red",
+    "my_team": "blue",
     "target_jammer_level": 1,
     "__comment_team": "red(我是红方，接收蓝方信号) / blue(我是蓝方，接收红方信号)",
     "__comment_jammer": "干扰源等级: 0(无/仅广播), 1(一级), 2(二级), 3(三级)",
-    "receive_team": "blue",
+    "receive_team": "red",
     "__comment_receive": "receive_team: red/blue - select broadcast source to receive"
   },
   "frequencies": {
